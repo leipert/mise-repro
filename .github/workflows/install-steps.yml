@@ -17,7 +17,9 @@ env:
 jobs:
   install-steps:
     name: "install-steps mise:${{ matrix.version }}"
-    runs-on: bookworm-slim
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bookworm-slim
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -26,6 +28,10 @@ jobs:
           - "2026.6.1"
           - "2026.6.10"
     steps:
+      - name: Install container dependencies
+        run: |
+          apt-get update
+          apt-get install -y bash ca-certificates curl git
       - uses: actions/checkout@v6
       - uses: jdx/mise-action@v3
         with:
