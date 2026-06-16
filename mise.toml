@@ -1,0 +1,12 @@
+[tools]
+python = "3.13.13"
+yarn = { version = "latest",
+    depends = ["python"],
+    post_install = '''
+    echo "wat" >>  /Users/ip/repos/ttt/test.txt
+    python --version >> /Users/ip/repos/ttt/test.txt
+    echo "wat" >>  /Users/ip/repos/ttt/test.txt
+    ''' }
+
+[env]
+CLOUDSDK_PYTHON = { value = "{{ tools.python.path | default(value='') }}/bin/python3", tools = true }
