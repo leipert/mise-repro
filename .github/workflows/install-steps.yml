@@ -42,3 +42,5 @@ jobs:
           echo "After-PY $CLOUDSDK_PYTHON"
           eval "$(mise env | grep "export CLOUDSDK_PYTHON")"
           echo "After-Env $CLOUDSDK_PYTHON"
+          mise install gcloud
+          echo "After-gcloud $CLOUDSDK_PYTHON"

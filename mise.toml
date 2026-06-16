@@ -1,11 +1,7 @@
 [tools]
 python = "3.13.13"
-yarn = { version = "latest",
-    depends = ["python"],
-    post_install = '''
-    echo "wat" >>  /Users/ip/repos/ttt/test.txt
-    python --version >> /Users/ip/repos/ttt/test.txt
-    echo "wat" >>  /Users/ip/repos/ttt/test.txt
+gcloud = { version = "latest", depends = ["python"], post_install = '''
+    $CLOUDSDK_PYTHON --version
     ''' }
 
 [env]
