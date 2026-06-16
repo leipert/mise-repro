@@ -1,4 +1,4 @@
-name: ci
+name: install-together
 
 on:
   workflow_dispatch:
@@ -15,23 +15,26 @@ env:
   MISE_EXPERIMENTAL: true
 
 jobs:
-  before-fix-steps:
+  install-together:
+    name: "install-together mise:${{ matrix.version }}"
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "2026.6.9"
+          - "2026.6.10"
     steps:
       - uses: actions/checkout@v6
       - uses: jdx/mise-action@v3
         with:
-          version: 2026.6.9 # [default: latest] mise version to install
+          version: ${{ matrix.version }} # [default: latest] mise version to install
           install: false
           cache: false
           experimental: true
           log_level: debug
       - run: |
           echo "Before $CLOUDSDK_PYTHON"
-          mise uninstall python --all
-          echo "Before-PY: $CLOUDSDK_PYTHON"
-          mise install python
-          echo "After-PY $CLOUDSDK_PYTHON"
-          eval "$(mise env | grep "export CLOUDSDK_PYTHON")"
-          echo "After-Env $CLOUDSDK_PYTHON"
+          mise install
+          echo "After $CLOUDSDK_PYTHON"

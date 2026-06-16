@@ -1,0 +1,44 @@
+name: install-steps
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    tags: ["*"]
+    branches: ["main"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  MISE_EXPERIMENTAL: true
+
+jobs:
+  install-steps:
+    name: "install-steps mise:${{ matrix.version }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "2026.6.9"
+          - "2026.6.10"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@v3
+        with:
+          version: ${{ matrix.version }} # [default: latest] mise version to install
+          install: false
+          cache: false
+          experimental: true
+          log_level: debug
+      - run: |
+          echo "Before $CLOUDSDK_PYTHON"
+          mise uninstall python --all
+          echo "Before-PY: $CLOUDSDK_PYTHON"
+          mise install python
+          echo "After-PY $CLOUDSDK_PYTHON"
+          eval "$(mise env | grep "export CLOUDSDK_PYTHON")"
+          echo "After-Env $CLOUDSDK_PYTHON"
