@@ -15,7 +15,7 @@ env:
   MISE_EXPERIMENTAL: true
 
 jobs:
-  before-fix-steps:
+  before-fix-together:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -29,9 +29,5 @@ jobs:
           log_level: debug
       - run: |
           echo "Before $CLOUDSDK_PYTHON"
-          mise uninstall python --all
-          echo "Before-PY: $CLOUDSDK_PYTHON"
-          mise install python
-          echo "After-PY $CLOUDSDK_PYTHON"
-          eval "$(mise env | grep "export CLOUDSDK_PYTHON")"
-          echo "After-Env $CLOUDSDK_PYTHON"
+          mise install
+          echo "After $CLOUDSDK_PYTHON"
