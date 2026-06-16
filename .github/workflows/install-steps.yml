@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - "2026.6.9"
+          - "2026.6.1"
           - "2026.6.10"
     steps:
       - uses: actions/checkout@v6
